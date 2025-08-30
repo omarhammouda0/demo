@@ -1,7 +1,9 @@
 package service;
 
+import DTO.AppointmentDTO;
 import domain.Appointment;
 import domain.Doctor;
+import domain.Patient;
 import org.springframework.stereotype.Service;
 import repository.DoctorRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -13,7 +15,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+
 
 
 @Service
@@ -55,6 +57,23 @@ public class AppointmentService {
 
 
     }
+
+    public Doctor checkAppointmentMapperDoctor (Long doc_id  ) {
+
+        return doctorRepository.findById ( doc_id ).orElseThrow
+                (() -> new EntityNotFoundException ( "This doctor can not be found" ));
+
+    }
+
+
+    public Patient checkAppointmentMapperPatient (Long pat_id ) {
+
+        return patientRepository.findById ( pat_id ).orElseThrow
+                (() -> new EntityNotFoundException ( "This patient can not be found" ));
+
+    }
+
+
 
     private void validateAppointmentTimes (Appointment appointment) {
 
@@ -142,6 +161,27 @@ public class AppointmentService {
             throw new IllegalArgumentException (  " appointment cannot be empty" );
         }
 
+        if (appointment.getDoctor () == null || appointment.getPatient () == null) {
+            throw new IllegalArgumentException (  " doctor and patient cannot be empty" );
+        }
+
+        if (appointment.getDoctor ().getId () == null || appointment.getDoctor ().getId () <= 0) {
+            throw new IllegalArgumentException (  " Invalid doctor id" );
+        }
+
+        if (appointment.getPatient ().getId () == null || appointment.getPatient ().getId () <= 0) {
+            throw new IllegalArgumentException (  " Invalid patient id" );
+        }
+
+        Doctor doctor = doctorRepository.findById (appointment.getDoctor().getId())
+                .orElseThrow ( ()-> new EntityNotFoundException ( "This doctor is not found" ) );
+
+        Patient patient = patientRepository.findById (appointment.getPatient().getId())
+                .orElseThrow ( ()-> new EntityNotFoundException ( "This patient is not found" ) );
+
+        appointment.setDoctor(doctor);
+        appointment.setPatient(patient);
+
         validateAppointmentFields ( appointment );
         validateAppointmentTimes ( appointment );
         CreateConflictCheck (  appointment );
@@ -161,17 +201,22 @@ public class AppointmentService {
         Appointment existed = appointmentRepository.findAppointmentById ( Id )
                 .orElseThrow (()-> new EntityNotFoundException ( "This appointment is not found" ) );
 
+        Doctor doctor = doctorRepository.findById (appointment.getDoctor().getId())
+                .orElseThrow ( ()-> new EntityNotFoundException ( "This doctor is not found" ) );
 
-        validateAppointmentFields ( appointment );
-        validateAppointmentTimes ( appointment );
-        UpdateConflictCheck ( Id , appointment );
+        Patient patient = patientRepository.findById (appointment.getPatient().getId())
+                .orElseThrow ( ()-> new EntityNotFoundException ( "This patient is not found" ) );
 
-        existed.setDoctor ( appointment.getDoctor ( ) );
-        existed.setPatient ( appointment.getPatient () );
-        existed.setStartTime ( appointment.getStartTime () );
-        existed.setEndTime ( appointment.getEndTime () );
-        existed.setNote(appointment.getNote() == null ? null : appointment.getNote().trim());
-        existed.setStatus (   appointment.getStatus () );
+        existed.setDoctor ( doctor );
+        existed.setPatient ( patient );
+        existed.setStartTime ( appointment.getStartTime ( ) );
+        existed.setEndTime ( appointment.getEndTime ( ) );
+        existed.setNote ( appointment.getNote ( ) == null ? null : appointment.getNote ( ).trim ( ) );
+        existed.setStatus ( appointment.getStatus ( )  );
+
+        validateAppointmentFields ( existed );
+        validateAppointmentTimes ( existed );
+        UpdateConflictCheck ( Id , existed );
 
 
         return appointmentRepository.save ( existed );

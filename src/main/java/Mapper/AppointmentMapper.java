@@ -4,22 +4,18 @@ import domain.Appointment;
 import domain.Doctor;
 import domain.Patient;
 import org.springframework.stereotype.Component;
-import repository.DoctorRepository;
-import repository.PatientRepository;
-import java.util.Optional;
+
 
 
 @Component
 
 public class AppointmentMapper {
 
-    private final DoctorRepository doctorRepository;
-    private final PatientRepository patientRepository;
 
-    public AppointmentMapper(DoctorRepository doctorRepository , PatientRepository patientRepository) {
-        this.doctorRepository = doctorRepository;
 
-        this.patientRepository = patientRepository;
+
+    public AppointmentMapper() {
+
     }
 
     public  AppointmentDTO toAppointmentDTO(Appointment appointment) {
@@ -40,23 +36,17 @@ public class AppointmentMapper {
 
     public  Appointment toAppointment(AppointmentDTO appointmentDTO) {
 
-        Long doc_id = appointmentDTO.doctor_id ();
-        Long pat_id = appointmentDTO.patient_id ();
 
         Appointment appointment = new Appointment ();
 
+        Doctor doctor = new Doctor();
+        doctor.setId ( appointmentDTO.doctor_id () );
+        appointment.setDoctor ( doctor );
 
-        Optional <Doctor> doc = doctorRepository.findById ( doc_id );
-        Optional<Patient> pat = patientRepository.findById ( pat_id );
+        Patient patient = new Patient();
+        patient.setId ( appointmentDTO.patient_id () );
+        appointment.setPatient ( patient );
 
-        if (doc.isEmpty () || pat.isEmpty ()) {
-            throw new RuntimeException ("Doctor or Patient not found");
-        }
-
-        doc.ifPresent ( appointment::setDoctor );
-        pat.ifPresent ( appointment::setPatient );
-        appointment.setDoctor ( doc.get () );
-        appointment.setPatient ( pat.get () );
         appointment.setStartTime ( appointmentDTO.startTime () );
         appointment.setEndTime ( appointmentDTO.endTime () );
         appointment.setNote ( appointmentDTO.note ( ) );

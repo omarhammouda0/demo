@@ -4,6 +4,7 @@ import DTO.AppointmentDTO;
 import domain.Appointment;
 import domain.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import service.AppointmentService;
 import Mapper.AppointmentMapper;
@@ -27,6 +28,7 @@ public class AppointmentController {
 
 
     @GetMapping
+
     public List<AppointmentDTO> getAppointments() {
         return appointmentService.getAllAppointments ()
                 .stream ()
