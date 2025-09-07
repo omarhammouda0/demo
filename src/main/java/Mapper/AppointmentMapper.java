@@ -22,6 +22,8 @@ public class AppointmentMapper {
 
         return new AppointmentDTO (
 
+
+                appointment.getId(),
                 appointment.getDoctor ().getId (),
                 appointment.getDoctor ().getName (),
                 appointment.getPatient ().getId (),

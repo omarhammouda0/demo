@@ -5,6 +5,8 @@ import domain.Appointment;
 import java.time.LocalDateTime;
 
 public record AppointmentDTO(
+
+        Long Id ,
         Long doctor_id,
         String doctor_name ,
         Long patient_id,

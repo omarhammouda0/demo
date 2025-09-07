@@ -2,7 +2,7 @@ package controller;
 
 import DTO.AppointmentDTO;
 import domain.Appointment;
-import domain.Patient;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +40,7 @@ public class AppointmentController {
     public AppointmentDTO getAppointmentById ( @PathVariable Long id ) {
        return appointmentMapper.toAppointmentDTO ( appointmentService.getAppointmentById ( id ) ) ;
     }
+
 
     @PostMapping
     public AppointmentDTO createAppointment(@RequestBody AppointmentDTO appointmentDTO) {

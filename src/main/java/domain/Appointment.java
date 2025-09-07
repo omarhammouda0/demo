@@ -35,6 +35,11 @@ public class Appointment {
     @JoinColumn(name = "patient_id" , nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler" ,  "appointments"})
 
+    // omat tries to push
+
+
+
+
     private Patient patient;
 
     @Column (name = "start_time" , nullable = false)
