@@ -1,12 +1,10 @@
 package service;
 
-import DTO.PatientDTO;
-import Mapper.PatientMapper;
-import domain.Patient;
+import domain.model.patient;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import repository.PatientRepository;
+import repository.patientRepository;
 import java.util.List;
 import java.util.Locale;
 
@@ -14,15 +12,15 @@ import java.util.Locale;
 
 
 @Service
-public class PatientService {
+public class patientService {
 
 
 
-    private final PatientRepository patientRepository;
+    private final patientRepository patientRepository;
 
 
 
-    public PatientService(PatientRepository patientRepository ) {
+    public patientService(patientRepository patientRepository ) {
 
         this.patientRepository = patientRepository;
 
@@ -38,7 +36,7 @@ public class PatientService {
     // 1
 
     @Transactional (readOnly = true)
-    public List<Patient> getAllPatients() {
+    public List<patient> getAllPatients() {
         return patientRepository.findAll() ;
     }
 
@@ -46,7 +44,7 @@ public class PatientService {
     // 2
 
     @Transactional (readOnly = true)
-    public Patient getPatientById(Long id) {
+    public patient getPatientById(Long id) {
 
         if (id == null || id <= 0) {
             throw new IllegalArgumentException ( "Invalid id!" );
@@ -64,7 +62,7 @@ public class PatientService {
 
 
     @Transactional
-    public Patient createPatient(Patient patient) {
+    public patient createPatient(patient patient) {
 
         if (patient == null) {
             throw new IllegalArgumentException ( "patient cannot be null !" );
@@ -106,7 +104,7 @@ public class PatientService {
     // Update
 
     @Transactional
-    public Patient updatePatient(Long id, Patient patient) {
+    public patient updatePatient(Long id, patient patient) {
         if (id == null || id <= 0 ) {
             throw new IllegalArgumentException ( "Invalid id!" );
         }
@@ -115,7 +113,7 @@ public class PatientService {
             throw new IllegalArgumentException ( "Patient  cannot be null!" );
         }
 
-        Patient exisitedPatient = patientRepository.findById ( id ).orElseThrow ( ()
+        patient exisitedPatient = patientRepository.findById ( id ).orElseThrow ( ()
                 -> new EntityNotFoundException ( "Patient not found!") );
 
 

@@ -1,27 +1,25 @@
 package controller;
 
-import DTO.DoctorDTO;
-import Mapper.DoctorMapper;
-import domain.Doctor;
+import domain.dto.doctorDto;
+import mapper.doctorMapper;
+import domain.model.doctor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import service.DoctorService;
-import service.PatientService;
+import service.doctorService;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/doctors")
 
-public class DoctorController {
+public class doctorController {
 
-    private final DoctorService doctorService;
-    private final DoctorMapper doctorMapper;
+    private final doctorService doctorService;
+    private final doctorMapper doctorMapper;
 
     @Autowired
-    public DoctorController(DoctorService doctorService , DoctorMapper doctorMapper) {
+    public doctorController(doctorService doctorService , doctorMapper doctorMapper) {
         this.doctorService = doctorService;
         this.doctorMapper = doctorMapper;
     }
@@ -29,7 +27,7 @@ public class DoctorController {
 
 
     @GetMapping
-    public List<DoctorDTO> getAllDoctors() {
+    public List<doctorDto> getAllDoctors() {
         return doctorService.getAllDoctors ()
                 .stream ()
                 .map ( doctorMapper::toDoctorDTO )
@@ -37,26 +35,26 @@ public class DoctorController {
     }
 
     @GetMapping("/{id}")
-    public DoctorDTO getDoctorById(@PathVariable Long id) {
+    public doctorDto getDoctorById(@PathVariable Long id) {
 
-        Doctor doctor = doctorService.getDoctorById (id);
+        doctor doctor = doctorService.getDoctorById (id);
         return doctorMapper.toDoctorDTO ( doctor );
     }
 
     @PostMapping
-    public DoctorDTO createDoctor(@RequestBody DoctorDTO doctor) {
+    public doctorDto createDoctor(@RequestBody doctorDto doctor) {
 
-        Doctor toSave = doctorMapper.toDoctor ( doctor );
-        Doctor saved = doctorService.createDoctor ( toSave );
+        doctor toSave = doctorMapper.toDoctor ( doctor );
+        doctor saved = doctorService.createDoctor ( toSave );
         return  doctorMapper.toDoctorDTO ( saved );
 
     }
 
     @PutMapping ("/{id}")
-    public DoctorDTO updateDoctor(@PathVariable Long id , @RequestBody DoctorDTO doctor) {
+    public doctorDto updateDoctor(@PathVariable Long id , @RequestBody doctorDto doctor) {
 
-        Doctor toSave = doctorMapper.toDoctor ( doctor );
-        Doctor saved = doctorService.updateDoctor ( id ,toSave );
+        doctor toSave = doctorMapper.toDoctor ( doctor );
+        doctor saved = doctorService.updateDoctor ( id ,toSave );
         return  doctorMapper.toDoctorDTO ( saved );
 
     }

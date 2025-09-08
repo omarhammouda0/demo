@@ -1,26 +1,26 @@
-package Mapper;
-import DTO.AppointmentDTO;
-import domain.Appointment;
-import domain.Doctor;
-import domain.Patient;
+package mapper;
+import domain.dto.appointmentDto;
+import domain.model.appointment;
+import domain.model.doctor;
+import domain.model.patient;
 import org.springframework.stereotype.Component;
 
 
 
 @Component
 
-public class AppointmentMapper {
+public class appointmentMapper {
 
 
 
 
-    public AppointmentMapper() {
+    public appointmentMapper() {
 
     }
 
-    public  AppointmentDTO toAppointmentDTO(Appointment appointment) {
+    public appointmentDto toAppointmentDTO(appointment appointment) {
 
-        return new AppointmentDTO (
+        return new appointmentDto (
 
 
                 appointment.getId(),
@@ -36,16 +36,16 @@ public class AppointmentMapper {
     }
 
 
-    public  Appointment toAppointment(AppointmentDTO appointmentDTO) {
+    public appointment toAppointment(appointmentDto appointmentDTO) {
 
 
-        Appointment appointment = new Appointment ();
+        appointment appointment = new appointment ();
 
-        Doctor doctor = new Doctor();
+        doctor doctor = new doctor ();
         doctor.setId ( appointmentDTO.doctor_id () );
         appointment.setDoctor ( doctor );
 
-        Patient patient = new Patient();
+        patient patient = new patient ();
         patient.setId ( appointmentDTO.patient_id () );
         appointment.setPatient ( patient );
 

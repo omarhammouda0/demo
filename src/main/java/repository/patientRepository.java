@@ -1,6 +1,6 @@
 package repository;
 
-import domain.Patient;
+import domain.model.patient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,11 +8,11 @@ import java.util.Optional;
 
 @Repository
 
-public interface PatientRepository extends JpaRepository<Patient, Long> {
+public interface patientRepository extends JpaRepository<patient, Long> {
 
-    Optional<Patient> findPatientByEmail(String email);
+    Optional<patient> findPatientByEmail(String email);
 
-    Optional<Patient> findPatientByPhone(String phone);
+    Optional<patient> findPatientByPhone(String phone);
 
     boolean existsByEmail(String email);
 

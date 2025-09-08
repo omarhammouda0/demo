@@ -1,10 +1,12 @@
-package DTO;
+package domain.dto;
 
-import domain.Appointment;
+import domain.model.appointment;
+import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
 
-public record AppointmentDTO(
+public record appointmentDto(
+
 
         Long Id ,
         Long doctor_id,
@@ -13,7 +15,7 @@ public record AppointmentDTO(
         String patient_name ,
         LocalDateTime startTime ,
         LocalDateTime endTime ,
-        Appointment.Status status ,
+        appointment.Status status ,
         String note
 ) {
 }

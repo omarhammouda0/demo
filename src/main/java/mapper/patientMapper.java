@@ -1,21 +1,21 @@
-package Mapper;
+package mapper;
 
-import DTO.PatientDTO;
-import domain.Patient;
+import domain.dto.patientDto;
+import domain.model.patient;
 import org.springframework.stereotype.Component;
 
 @Component
 
 
 
-public class PatientMapper {
+public class patientMapper {
 
-    public  Patient toPatient(PatientDTO patientDTO) {
+    public patient toPatient(patientDto patientDTO) {
 
         if(patientDTO == null)
             throw new IllegalArgumentException ("Patient DTO can not be null");
 
-        Patient patient = new Patient();
+        patient patient = new patient ();
 
         patient.setId ( patientDTO.id ( ) );
         patient.setFullName (  patientDTO.fullName ( ) );
@@ -26,7 +26,7 @@ public class PatientMapper {
         return patient;
     }
 
-    public  PatientDTO toPatientDTO(Patient patient) {
+    public patientDto toPatientDTO(patient patient) {
 
         if(patient == null)
             throw new IllegalArgumentException ("Patient can not be null");
@@ -34,7 +34,7 @@ public class PatientMapper {
         if(patient.getId () == null)
             throw new IllegalArgumentException ("Patient ID can not be null");
 
-        return new PatientDTO ( patient.getId () ,
+        return new patientDto ( patient.getId () ,
                 patient.getFullName (),
                 patient.getEmail (),
                 patient.getPhone ());

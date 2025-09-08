@@ -1,25 +1,22 @@
 package service;
 
-import domain.Appointment;
-import domain.Doctor;
+import domain.model.doctor;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import repository.DoctorRepository;
-import repository.AppointmentRepository;
+import repository.doctorRepository;
+import repository.appointmentRepository;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
-public class DoctorService {
+public class doctorService {
 
 
-    private final  DoctorRepository doctorRepository;
-    private final  AppointmentRepository appointmentRepository;
+    private final doctorRepository doctorRepository;
+    private final appointmentRepository appointmentRepository;
 
-    public DoctorService(DoctorRepository doctorRepository , AppointmentRepository appointmentRepository) {
+    public doctorService(doctorRepository doctorRepository , appointmentRepository appointmentRepository) {
         this.doctorRepository = doctorRepository;
         this.appointmentRepository = appointmentRepository;
     }
@@ -28,13 +25,13 @@ public class DoctorService {
     // Read
 
     @Transactional(readOnly = true)
-    public List<Doctor> getAllDoctors() {
+    public List<doctor> getAllDoctors() {
         return doctorRepository.findAll();
     }
 
 
     @Transactional(readOnly = true)
-    public Doctor getDoctorById(Long id) {
+    public doctor getDoctorById(Long id) {
 
         if (id == null || id <= 0) {
             throw new IllegalArgumentException("invalid doctor id");
@@ -49,7 +46,7 @@ public class DoctorService {
     // Read
 
     @Transactional
-    public Doctor createDoctor(Doctor doctor) {
+    public doctor createDoctor(doctor doctor) {
 
         if (doctor == null){
             throw new IllegalArgumentException("invalid input");
@@ -83,7 +80,7 @@ public class DoctorService {
     // Update
 
     @Transactional
-    public Doctor updateDoctor(Long id , Doctor doctor) {
+    public doctor updateDoctor(Long id , doctor doctor) {
 
         if (id == null || id <= 0) {
             throw new IllegalArgumentException ( "invalid doctor id" );
@@ -93,7 +90,7 @@ public class DoctorService {
             throw new IllegalArgumentException("invalid input");
         }
 
-       Doctor existingDoctor = doctorRepository.findById(id).orElseThrow
+       doctor existingDoctor = doctorRepository.findById(id).orElseThrow
                (()-> new EntityNotFoundException ( "Doctor with id " + id + " not found"));
 
         String name = doctor.getName() == null ? "" : doctor.getName().trim().replaceAll("\\s+", " ");
@@ -129,7 +126,7 @@ public class DoctorService {
             throw new IllegalArgumentException("invalid doctor id" );
         }
 
-        Doctor existingDoctor = doctorRepository.findById(id).orElseThrow
+        doctor existingDoctor = doctorRepository.findById(id).orElseThrow
                 (()-> new EntityNotFoundException ( "Doctor with id " + id + " not found"));
 
         doctorRepository.deleteDoctorById(id);

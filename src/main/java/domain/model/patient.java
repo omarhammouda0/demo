@@ -1,4 +1,4 @@
-package domain;
+package domain.model;
 
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -11,7 +11,7 @@ import java.util.Objects;
 @Table (name = "patient" )
 @EntityListeners(org.springframework.data.jpa.domain.support.AuditingEntityListener.class)
 
-public class Patient {
+public class patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,13 +35,13 @@ public class Patient {
     private LocalDateTime updated_at;
 
 
-    public Patient(String fullName , String email , String phone) {
+    public patient(String fullName , String email , String phone) {
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
     }
 
-    public Patient() {}
+    public patient() {}
 
 
 
@@ -87,7 +87,7 @@ public class Patient {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Patient patient)) return false;
+        if (!(o instanceof patient patient)) return false;
         return Objects.equals ( getId ( ) , patient.getId ( ) );
     }
 

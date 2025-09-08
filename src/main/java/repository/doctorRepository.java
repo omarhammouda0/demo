@@ -1,30 +1,26 @@
 package repository;
 
-import domain.Appointment;
-import domain.Doctor;
+import domain.model.doctor;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @Component
 @Repository
-public interface DoctorRepository extends JpaRepository<Doctor,Integer> {
+public interface doctorRepository extends JpaRepository<doctor,Integer> {
 
-    Optional<Doctor> findById(Long id);
+    Optional<doctor> findById(Long id);
 
-    Optional<Doctor> findBySpecialty(String name);
+    Optional<doctor> findBySpecialty(String name);
 
-    List<Doctor> findDoctorBySpecialty(String specialty);
+    List<doctor> findDoctorBySpecialty(String specialty);
 
-    Optional<Doctor> findDoctorByName(String name);
+    Optional<doctor> findDoctorByName(String name);
 
-    List<Doctor> streamDoctorsById(Long id);
+    List<doctor> streamDoctorsById(Long id);
 
 
     void deleteDoctorById(Long id);

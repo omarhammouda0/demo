@@ -1,15 +1,14 @@
 package service;
 
-import DTO.AppointmentDTO;
-import domain.Appointment;
-import domain.Doctor;
-import domain.Patient;
+import domain.model.appointment;
+import domain.model.doctor;
+import domain.model.patient;
 import org.springframework.stereotype.Service;
-import repository.DoctorRepository;
+import repository.doctorRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
-import repository.AppointmentRepository;
-import repository.PatientRepository;
+import repository.appointmentRepository;
+import repository.patientRepository;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -20,19 +19,19 @@ import java.util.List;
 
 @Service
 
-public class AppointmentService {
+public class appointmentService {
 
-    private final DoctorRepository doctorRepository;
-    private final AppointmentRepository appointmentRepository;
-    private final PatientRepository patientRepository;
+    private final doctorRepository doctorRepository;
+    private final appointmentRepository appointmentRepository;
+    private final patientRepository patientRepository;
 
-    public AppointmentService(DoctorRepository doctorRepository , AppointmentRepository appointmentRepository , PatientRepository patientRepository) {
+    public appointmentService(doctorRepository doctorRepository , appointmentRepository appointmentRepository , patientRepository patientRepository) {
         this.doctorRepository = doctorRepository;
         this.appointmentRepository = appointmentRepository;
         this.patientRepository = patientRepository;
     }
 
-    private void validateAppointmentFields(Appointment appointment) {
+    private void validateAppointmentFields(appointment appointment) {
 
         if (appointment.getDoctor ( ) == null || appointment.getDoctor ( ).getId ( ) == null ||
                 appointment.getDoctor ().getId () <= 0
@@ -58,7 +57,7 @@ public class AppointmentService {
 
     }
 
-    public Doctor checkAppointmentMapperDoctor (Long doc_id  ) {
+    public doctor checkAppointmentMapperDoctor (Long doc_id  ) {
 
         return doctorRepository.findById ( doc_id ).orElseThrow
                 (() -> new EntityNotFoundException ( "This doctor can not be found" ));
@@ -66,7 +65,7 @@ public class AppointmentService {
     }
 
 
-    public Patient checkAppointmentMapperPatient (Long pat_id ) {
+    public patient checkAppointmentMapperPatient (Long pat_id ) {
 
         return patientRepository.findById ( pat_id ).orElseThrow
                 (() -> new EntityNotFoundException ( "This patient can not be found" ));
@@ -75,7 +74,7 @@ public class AppointmentService {
 
 
 
-    private void validateAppointmentTimes (Appointment appointment) {
+    private void validateAppointmentTimes (appointment appointment) {
 
         LocalDateTime now = LocalDateTime.now ( );
 
@@ -96,7 +95,7 @@ public class AppointmentService {
     }
 
 
-    private void CreateConflictCheck (Appointment appointment) {
+    private void CreateConflictCheck (appointment appointment) {
 
         if (appointmentRepository.existsByDoctorIdAndStartTimeLessThanAndEndTimeGreaterThan (
                 appointment.getDoctor ().getId (), appointment.getEndTime () , appointment.getStartTime () )) {
@@ -108,7 +107,7 @@ public class AppointmentService {
     }
 
 
-    private void UpdateConflictCheck(Long Id , Appointment appointment) {
+    private void UpdateConflictCheck(Long Id , appointment appointment) {
         if (appointmentRepository.existsByDoctorIdAndStartTimeLessThanAndEndTimeGreaterThanAndIdNot (
                 appointment.getDoctor ( ).getId ( ) , appointment.getEndTime ( ) ,
                 appointment.getStartTime ( ) , Id )) {
@@ -121,12 +120,12 @@ public class AppointmentService {
     // Read
 
     @Transactional(readOnly = true)
-    public List<Appointment> getAllAppointments(){
+    public List<appointment> getAllAppointments(){
         return appointmentRepository.findAll();
     }
 
     @Transactional(readOnly = true)
-    public Appointment getAppointmentById(Long id) {
+    public appointment getAppointmentById(Long id) {
 
         if (id == null || id <= 0) {
             throw new IllegalArgumentException ( id + " is not a valid input" );
@@ -137,13 +136,13 @@ public class AppointmentService {
     }
 
     @Transactional(readOnly = true)
-    public List <Appointment> getDoctorSchedule (Long doctorId , LocalDate day ) {
+    public List <appointment> getDoctorSchedule (Long doctorId , LocalDate day ) {
 
         if (doctorId == null || doctorId <= 0 || day == null) {
             throw new IllegalArgumentException (  " Invalid input" );
         }
 
-        Doctor existed = doctorRepository.findById (  doctorId ).orElseThrow (
+        doctor existed = doctorRepository.findById (  doctorId ).orElseThrow (
                 ()-> new EntityNotFoundException ( "This doctor is not found" )
         );
 
@@ -155,7 +154,7 @@ public class AppointmentService {
     // Create
 
     @Transactional
-    public Appointment createAppointment(Appointment appointment) {
+    public appointment createAppointment(appointment appointment) {
 
         if (appointment == null) {
             throw new IllegalArgumentException (  " appointment cannot be empty" );
@@ -173,10 +172,10 @@ public class AppointmentService {
             throw new IllegalArgumentException (  " Invalid patient id" );
         }
 
-        Doctor doctor = doctorRepository.findById (appointment.getDoctor().getId())
+        doctor doctor = doctorRepository.findById (appointment.getDoctor().getId())
                 .orElseThrow ( ()-> new EntityNotFoundException ( "This doctor is not found" ) );
 
-        Patient patient = patientRepository.findById (appointment.getPatient().getId())
+        patient patient = patientRepository.findById (appointment.getPatient().getId())
                 .orElseThrow ( ()-> new EntityNotFoundException ( "This patient is not found" ) );
 
         appointment.setDoctor(doctor);
@@ -192,19 +191,19 @@ public class AppointmentService {
     // Update
 
     @Transactional
-    public Appointment updateAppointment(Long Id , Appointment appointment) {
+    public appointment updateAppointment(Long Id , appointment appointment) {
 
         if (appointment == null || Id == null || Id <= 0) {
             throw new IllegalArgumentException (  " Invalid input" );
         }
 
-        Appointment existed = appointmentRepository.findAppointmentById ( Id )
+        appointment existed = appointmentRepository.findAppointmentById ( Id )
                 .orElseThrow (()-> new EntityNotFoundException ( "This appointment is not found" ) );
 
-        Doctor doctor = doctorRepository.findById (appointment.getDoctor().getId())
+        doctor doctor = doctorRepository.findById (appointment.getDoctor().getId())
                 .orElseThrow ( ()-> new EntityNotFoundException ( "This doctor is not found" ) );
 
-        Patient patient = patientRepository.findById (appointment.getPatient().getId())
+        patient patient = patientRepository.findById (appointment.getPatient().getId())
                 .orElseThrow ( ()-> new EntityNotFoundException ( "This patient is not found" ) );
 
         existed.setDoctor ( doctor );
@@ -231,7 +230,7 @@ public class AppointmentService {
             throw new IllegalArgumentException (  " Invalid input" );
         }
 
-        Appointment existed = appointmentRepository.findAppointmentById ( id ).orElseThrow
+        appointment existed = appointmentRepository.findAppointmentById ( id ).orElseThrow
                 (  () -> new EntityNotFoundException ( "This appointment is not found" ) );
 
          appointmentRepository.delete ( existed );

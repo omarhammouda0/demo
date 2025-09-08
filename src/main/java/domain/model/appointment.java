@@ -1,7 +1,6 @@
-package domain;
+package domain.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -14,7 +13,7 @@ import java.util.Objects;
 @Table (name = "appointment" )
 @EntityListeners(org.springframework.data.jpa.domain.support.AuditingEntityListener.class)
 
-public class Appointment {
+public class appointment {
 
 
     public enum Status {BOOKED, CANCELLED, COMPLETED}
@@ -28,7 +27,7 @@ public class Appointment {
     @ManyToOne ( fetch = FetchType.EAGER , optional = false )
     @JoinColumn (name = "doctor_id" ,  nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler" ,  "appointments"})
-    private Doctor doctor;
+    private doctor doctor;
 
 
     @ManyToOne ( fetch = FetchType.EAGER ,  optional = false )
@@ -40,7 +39,7 @@ public class Appointment {
 
 
 
-    private Patient patient;
+    private patient patient;
 
     @Column (name = "start_time" , nullable = false)
     private LocalDateTime startTime;
@@ -63,7 +62,7 @@ public class Appointment {
     @Column (name = "updated_at" )
     private LocalDateTime updatedAt;
 
-    public Appointment(Doctor doctor , Patient patient , LocalDateTime startTime ,
+    public appointment(doctor doctor , patient patient , LocalDateTime startTime ,
                        LocalDateTime endTime , Status status , String note) {
 
         this.doctor = doctor;
@@ -74,7 +73,7 @@ public class Appointment {
         this.note = note;
     }
 
-    public Appointment() {}
+    public appointment() {}
 
     public Long getId() {
         return id;
@@ -84,19 +83,19 @@ public class Appointment {
         this.id = id;
     }
 
-    public Doctor getDoctor() {
+    public doctor getDoctor() {
         return doctor;
     }
 
-    public void setDoctor(Doctor doctor) {
+    public void setDoctor(doctor doctor) {
         this.doctor = doctor;
     }
 
-    public Patient getPatient() {
+    public patient getPatient() {
         return patient;
     }
 
-    public void setPatient(Patient patient) {
+    public void setPatient(patient patient) {
         this.patient = patient;
     }
 
@@ -140,7 +139,7 @@ public class Appointment {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Appointment that)) return false;
+        if (!(o instanceof appointment that)) return false;
         return Objects.equals ( getId ( ) , that.getId ( ) );
     }
 

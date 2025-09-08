@@ -1,4 +1,4 @@
-package domain;
+package domain.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -12,7 +12,7 @@ import java.util.Objects;
 @Table (name = "doctor" )
 @EntityListeners(org.springframework.data.jpa.domain.support.AuditingEntityListener.class)
 
-public class Doctor implements java.io.Serializable {
+public class doctor implements java.io.Serializable {
 
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY )
@@ -36,13 +36,13 @@ public class Doctor implements java.io.Serializable {
     private LocalDateTime updated_at;
 
 
-    public Doctor(String name , String specialty ) {
+    public doctor(String name , String specialty ) {
         this.name = name;
         this.specialty = specialty;
 
     }
 
-    public Doctor() {
+    public doctor() {
 
     }
 
@@ -83,7 +83,7 @@ public class Doctor implements java.io.Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Doctor doctor)) return false;
+        if (!(o instanceof doctor doctor)) return false;
         return Objects.equals ( getId ( ) , doctor.getId ( ) );
     }
 

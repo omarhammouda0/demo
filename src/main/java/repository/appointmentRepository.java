@@ -1,10 +1,8 @@
 package repository;
 
-import domain.Appointment;
-import domain.Doctor;
-import domain.Patient;
+import domain.model.appointment;
+import domain.model.doctor;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -16,22 +14,22 @@ import java.util.Optional;
 
 @Repository
 
-public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
+public interface appointmentRepository extends JpaRepository<appointment, Long> {
 
-    Optional<Appointment> findAppointmentById(Long id);
+    Optional<appointment> findAppointmentById(Long id);
 
-    List<Appointment> findAppointmentByDoctor(Doctor doctor);
+    List<appointment> findAppointmentByDoctor(doctor doctor);
 
-    List<Appointment> findAppointmentByStatus(Appointment.Status status);
+    List<appointment> findAppointmentByStatus(appointment.Status status);
 
-    List<Appointment> findByDoctorAndStartTimeBetween(Doctor doctor , LocalDateTime start , LocalDateTime end);
+    List<appointment> findByDoctorAndStartTimeBetween(doctor doctor , LocalDateTime start , LocalDateTime end);
 
     boolean existsByDoctorIdAndStartTimeLessThanAndEndTimeGreaterThan(Long id , LocalDateTime start , LocalDateTime end);
 
     boolean existsByDoctorIdAndStartTimeLessThanAndEndTimeGreaterThanAndIdNot(Long doctor_id , LocalDateTime startTime , LocalDateTime endTime , Long id);
 
 
-    List<Appointment> findByDoctor_Id(Long doctorId);
+    List<appointment> findByDoctor_Id(Long doctorId);
 
 
     @Query(value = """
@@ -40,7 +38,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
               AND DATE(a.start_time) = :day
             ORDER BY a.start_time
             """, nativeQuery = true)
-    List<Appointment> findDoctorSchedule(@Param("doctorId") Long doctorId , @Param("day") LocalDate day);
+    List<appointment> findDoctorSchedule(@Param("doctorId") Long doctorId , @Param("day") LocalDate day);
 
 }
 
